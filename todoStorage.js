@@ -13,7 +13,7 @@ if(todo.length){
 function show(){
     list.innerHTML = "";
     for (let i = 0; i < todo.length; i++) {
-        list.innerHTML += `<li>${todo[i]}</li>`
+        list.innerHTML += `<li>${todo[i]} <span onclick=remove(${i})> X </span><span onclick=edit(${i})> Edit </span></li>`
     }
 }
 function add(){
@@ -25,9 +25,12 @@ function add(){
 function edit(){
     show();
 }
-function remove(){
+function remove(index){
+    todo.splice(index, 1);
+    storage('todo', todo, true);
     show();
 }
+
 function storage(name, data = null, set = false){
     if(set){
         localStorage.setItem(name, JSON.stringify(data));
