@@ -1,73 +1,81 @@
-const input = document.getElementById('input'),
-      buttonadd = document.getElementById('add'),
-      list = document.getElementById('lists'),
-      buttonsort = document.getElementById('sort'),
-      data = storage('todo');
 
-let todo = data ? data : [];
 
-buttonadd.addEventListener('click', add);
-buttonsort.addEventListener('click', sortByComplete);
+class Todo {
+    constructor() {
+        this.input = document.getElementById('input'),
+        this.buttonadd = document.getElementById('add'),
+        this.list = document.getElementById('lists'),
+        this.buttonsort = document.getElementById('sort'),
+        this.data = storage('todo');
 
-if(todo.length){
-    show();
-}
+        this.todo = data ? data : [];
 
-function show(){
-    list.innerHTML = "";
-    for (let i = 0; i < todo.length; i++) {
-        todo[i].date = new Date(todo[i].date);
-        list.innerHTML += 
-        `<li>${todo[i].completed ? '<s>' : ''}${todo[i].text} | ${todo[i].date}${todo[i].completed ? '</s>' : ''} 
+        if(this.todo.length){
+            show();
+        }
+    }
+
+    show(){
+        list.innerHTML = "";
+        for (let i = 0; i < this.todo.length; i++) {
+            this.todo[i].date = new Date(this.todo[i].date);
+            list.innerHTML += 
+            `<li>${this.todo[i].completed ? '<s>' : ''}${this.todo[i].text} | ${this.todo[i].date}${this.todo[i].completed ? '</s>' : ''} 
             <button onclick="remove(${i})">🗑️</button>
             <button onclick="edit(${i}, event)">✏️</button>
             <button onclick="completeTask(${i}, event)">✔️</button>
-        </li>`
+            </li>`
+        }
     }
-}
-function add(){
-    let val = input.value;
-    todo.push({
-        text: val,
-        date: new Date(),
-        completed: false,
-    })
-    storage('todo', todo, true);
-    show();
-}
 
-function edit(index, event){
-    let elem = event.target.parentNode;
-    elem.innerHTML = `<input type="text" onkeypress="done(${index}, event)">`
-}
-
-function done(index, event){
-    if (event.which == 13) {
-        todo[index].text = event.target.value;
+    add(){
+        this.val = input.value;
+        this.todo.push({
+            text: val,
+            date: new Date(),
+            completed: false,
+        })
         storage('todo', todo, true);
         show();
     }
-}
+    
+    edit(index, event){
+        this.elem = event.target.parentNode;
+        elem.innerHTML = `<input type="text" onkeypress="done(${index}, event)">`
+    }
 
-function remove(index){
-    console.log('remove index', index);
-    todo.splice(index, 1);
-    storage('todo', todo, true);
-    show();
-}
+    done(index, event){
+        if (this.event.which == 13) {
+            this.todo[index].text = event.target.value;
+            storage('todo', todo, true);
+            show();
+        }
+    }
 
+    remove(index){
+        console.log('remove index', this.index);
+        this.todo.splice(this.index, 1);
+        storage('todo', todo, true);
+        show();
+    }
 
-function completeTask(index){
-    todo[index].completed = true;
-    storage('todo', todo, true);
-    show();
-}
-
-function storage(name, data = null, set = false){
-    if(set){
-        localStorage.setItem(name, JSON.stringify(data));
-        return true;
-    }else{
-        return JSON.parse(localStorage.getItem(name));
+    completeTask(index){
+        this.todo[index].completed = true;
+        storage('todo', todo, true);
+        show();
+    }
+    
+    storage(name, data = null, set = false){
+        if(set){
+            this.localStorage.setItem(this.name, JSON.stringify(this.data));
+            return true;
+        }else{
+            return JSON.parse(this.localStorage.getItem(name));
+        }
     }
 }
+
+let todo = new Todo();
+
+todo.buttonadd.addEventListener('click', add);
+todo.buttonsort.addEventListener('click', sortByComplete);
